@@ -58,12 +58,12 @@ module Capistrano
         namespace :slack do
           task :starting do
             announced_deployer = ActiveSupport::Multibyte::Chars.new(fetch(:deployer)).mb_chars.normalize(:kd).gsub(/[^\x00-\x7F]/, '').to_s
-            reference = `git rev-parse HEAD`
-            reference_url = "<https://github.com/callpixels/callpixels/commit/#{reference}|#{reference}>"
+            reference = `git rev-parse HEAD`.to_s.strip.rstrip
+            reference_url = reference.present? ? "<https://github.com/callpixels/callpixels/commit/#{reference}|#{reference[0..8]}>" : ''
             msg = if fetch(:branch, nil)
-                    "#{announced_deployer} is deploying #{fetch(:application)}'s #{branch} to #{fetch(:stage, 'production')} (#{reference_url}"
+                    "#{announced_deployer} is deploying #{fetch(:application)}'s #{branch} to #{fetch(:stage, 'production')} #{reference_url}"
                   else
-                    "#{announced_deployer} is deploying #{fetch(:application)} to #{fetch(:stage, 'production')} (#{reference_url}"
+                    "#{announced_deployer} is deploying #{fetch(:application)} to #{fetch(:stage, 'production')} #{reference_url}"
                   end
 
             slack_connect(msg)
