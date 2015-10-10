@@ -63,7 +63,14 @@ module Capistrano
               reference = `git rev-parse HEAD`.to_s.strip.rstrip
               reference_url = reference.present? ? "<https://github.com/callpixels/callpixels/commit/#{reference}|#{reference[0..8]}>" : ''
               branch = fetch(:branch, nil)
-              branch_url = branch.present? ? "<https://github.com/callpixels/callpixels/compare/master...#{branch}|#{branch}>" : ''
+              branch_url = ''
+              if branch.present?
+                if branch == 'master'
+                  branch_url = '<https://github.com/callpixels/callpixels/tree/master|master>'
+                else
+                  branch_url = "<https://github.com/callpixels/callpixels/compare/master...#{branch}|#{branch}>"
+                end
+              end
               message = "#{announced_deployer} is deploying #{fetch(:application)} #{branch_url} to *#{fetch(:stage, 'production')}* (#{reference_url})"
             end
             slack_connect(message)

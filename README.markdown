@@ -33,7 +33,9 @@ after 'deploy',  'slack:finished'
 set :slack_application, "Rocketman"
 set :slack_username, "Elton John"
 set :slack_emoji, ":rocket:"
-set :slack_deploy_defaults, false #gem provides the standard before and after callbacks deploy:starting and deploy:finished deploy of set to false and provide your own. 
+set :slack_deploy_defaults, false #gem provides the standard before and after callbacks deploy:starting and deploy:finished deploy of set to false and provide your own.
+set :slack_starting_message, "Set an alternative starting message"
+set :slack_finished_message, "Set an alternative finished message"
 #example slack:starting and slack:finished are the only defaults provided in the gem. 
 ```
 
